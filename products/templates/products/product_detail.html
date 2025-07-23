@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} Detail</title>
+    <style>
+        /* Add some basic styles for the auth links section */
+        .auth-links {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: right;
+        }
+        .auth-links a {
+            margin-left: 15px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+        .welcome-message {
+            margin-right: 15px;
+            font-weight: bold;
+            color: #343a40;
+        }
+        /* Existing styles for the product detail go here */
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4;}
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        h1 { color: #333; text-align: center; margin-bottom: 25px;}
+        .product-info {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            margin-top: 20px;
+        }
+        .product-image {
+            flex: 1;
+            text-align: center;
+        }
+        .product-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 300px; /* Limit image height */
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        .product-details {
+            flex: 2;
+        }
+        .product-details h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .product-details p {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .price {
+            font-size: 1.5em;
+            color: #007bff;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+        }
+        .back-link:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-links">
+        {% if user.is_authenticated %}
+            <span class="welcome-message">Welcome, {{ user.username }}!</span>
+            <a href="{% url 'logout' %}">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}">Register</a>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <h1>Product Details</h1>
+        <div class="product-info">
+            <div class="product-details">
+                <h2>{{ product.name }}</h2>
+                <p><strong>Company:</strong> {{ product.company }}</p>
+                <p><strong>Description:</strong> {{ product.description }}</p>
+                <p class="price">${{ product.price }}</p>
+                <a href="{% url 'products:list' %}" class="back-link">Back to Products</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

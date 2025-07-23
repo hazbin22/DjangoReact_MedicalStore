@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logged Out</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
+        .message-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .message-container h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .message-container p {
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .message-container a {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        .message-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="message-container">
+        <h2>You have been logged out</h2>
+        <p>Thank you for visiting!</p>
+        <a href="{% url 'login' %}">Log in again</a>
+        <a href="{% url 'products:list' %}" style="margin-left: 10px;">Return to Products</a>
+    </div>
+</body>
+</html>
