@@ -1,21 +1,19 @@
-# medical_store/accounts/views.py
-
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-# Removed UserLoginSerializer as UserLoginAPIView is being removed
-from .serializers import UserRegistrationSerializer # Only need UserRegistrationSerializer now
-# Removed authenticate as UserLoginAPIView is being removed
-# from django.contrib.auth import authenticate
+from .serializers import UserRegistrationSerializer
+from rest_framework import generics, permissions
+from .models import Profile 
+from .serializers import ProfileSerializer, CustomUserSerializer
 
 class UserRegistrationAPIView(APIView):
     permission_classes = [AllowAny] # Allow anyone to register
 
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
-        if serializer.is_valid():
+        if serializer.is_valid():   
             user = serializer.save()
             # Generate tokens upon successful registration is a good idea for immediate login
             refresh = RefreshToken.for_user(user)
@@ -55,3 +53,20 @@ class ProtectedView(APIView):
     def get(self, request):
         # request.user is available because of JWTAuthentication in settings.py
         return Response({'message': f'Welcome, {request.user.email}! You are authenticated.'}, status=status.HTTP_200_OK)
+    
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # This ensures that a user can only retrieve/update their own profile
+        return self.request.user.profile
+
+# You might also want a view to get the full CustomUser details with nested profile
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = CustomUserSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        # This ensures a user can only retrieve their own full user details
+        return self.request.user

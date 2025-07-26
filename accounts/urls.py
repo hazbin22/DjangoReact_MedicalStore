@@ -5,7 +5,8 @@ from .views import (
     UserRegistrationAPIView,
     UserLogoutAPIView,
     ProtectedView,
-    # UserLoginAPIView is removed as TokenObtainPairView handles login
+    UserProfileView, # Import the new view
+    UserDetailView,
 )
 from rest_framework_simplejwt.views import TokenBlacklistView # Keep for specific blacklisting endpoint if needed
 
@@ -19,7 +20,9 @@ urlpatterns = [
     path('logout/', UserLogoutAPIView.as_view(), name='user_logout'), # Your custom logout
     path('protected/', ProtectedView.as_view(), name='protected_view'), # Your protected test view
 
-    # You can keep TokenBlacklistView here if you want a dedicated endpoint for blacklisting a token manually
-    # path('token/blacklist/', TokenBlacklistView.as_view(), name='token_blacklist'),
-    # Note: Your UserLogoutAPIView already calls token.blacklist(), so this direct view might be redundant for normal logout flow.
+    # New URL for getting/updating user's own profile
+    path('profile/', UserProfileView.as_view(), name='user_profile'),
+
+    # New URL for getting user's full details (including nested profile)
+    path('me/', UserDetailView.as_view(), name='user_detail'), # 'me' is a common convention for current user details
 ]
